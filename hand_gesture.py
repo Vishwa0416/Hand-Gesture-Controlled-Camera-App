@@ -7,7 +7,7 @@ class HandGesture:
         self.hands = self.mp_hands.Hands(max_num_hands=max_hands)
         self.mp_draw = mp.solutions.drawing_utils
 
-    def find__hands(self, img, draw=True):
+    def find_hands(self, img, draw=True):
         img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         results = self.hands.process(img_rgb)
         hand_landmarks = []
