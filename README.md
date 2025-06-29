@@ -54,3 +54,20 @@ bash
 Copy
 Edit
 pip install -r requirements.txt
+
+---
+
+## 📝 TODOs
+ Hand gesture detection
+
+ Photo capture with palm gesture
+
+ Zoom with two-finger gesture
+
+ Timer with specific hand gestures
+
+ Add GUI (Tkinter/Streamlit) [optional]
+
+ Improve gesture accuracy
+
+
