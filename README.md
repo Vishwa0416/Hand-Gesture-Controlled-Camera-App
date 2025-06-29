@@ -24,3 +24,18 @@ hand-gesture-camera/
 ├── utils.py # Utility functions (drawing, timers etc.)
 ├── requirements.txt # Required Python packages
 └── README.md # Project documentation
+
+---
+
+## ▶️ Usage
+
+Run the application:
+
+bash
+Copy
+Edit
+python main.py
+Make sure your webcam is connected and working.
+
+---
+
