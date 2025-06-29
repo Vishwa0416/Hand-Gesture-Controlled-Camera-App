@@ -39,3 +39,18 @@ Make sure your webcam is connected and working.
 
 ---
 
+## 🧰 Requirements
+Python 3.10
+
+OpenCV
+
+MediaPipe
+
+Numpy
+
+Install all requirements using:
+
+bash
+Copy
+Edit
+pip install -r requirements.txt
