@@ -14,19 +14,6 @@ An AI-powered computer vision application that allows you to control a camera us
 
 ---
 
-## 📁 Project Structure
-
-hand-gesture-camera/
-│
-├── main.py # Main app logic
-├── gesture_recognition.py # Hand detection & gesture logic
-├── camera_controller.py # Camera control functions
-├── utils.py # Utility functions (drawing, timers etc.)
-├── requirements.txt # Required Python packages
-└── README.md # Project documentation
-
----
-
 ## ▶️ Usage
 
 Run the application:
