@@ -1,62 +1,43 @@
 import cv2
 import time
-import numpy as np
 from hand_gesture import HandGesture
-from utils import save_image
+import os
+
+# Create the folder if it doesn't exist
+save_dir = "captured_images"
+os.makedirs(save_dir, exist_ok=True)
 
 cap = cv2.VideoCapture(0)
 detector = HandGesture()
 
-zoom_level = 1.0
-timer_started = False
-timer_start_time = 0
+last_trigger_time = 0
+cooldown = 3  # seconds to wait before allowing next capture
 
 while True:
-    ret, frame = cap.read()
-    if not ret:
-        break
+    success, img = cap.read()
+    img, hands = detector.find_hands(img)
 
-    frame, hand_landmarks = detector.find_hands(frame)
+    if hands:
+        landmarks = hands[0]
+        fingers_up = detector.count_fingers(landmarks)
 
-    if hand_landmarks:
-        landmarks = hand_landmarks[0]
+        current_time = time.time()
 
-        thumb_tip = landmarks[4]
-        index_tip = landmarks[8]
-        middle_tip = landmarks[12]
-        ring_tip = landmarks[16]
-        pinky_tip = landmarks[20]
+        if fingers_up > 0:
+            timer = fingers_up  # Timer based on number of visible fingers
 
-        finger_tips = [index_tip, middle_tip, ring_tip, pinky_tip]
-        palm_open = all(pt[1] < landmarks[0][1] for pt in finger_tips)
+            if current_time - last_trigger_time > cooldown:
+                print(f"Taking photo in {timer} second(s)...")
+                time.sleep(timer)
+                
+                # Construct save path inside 'captured_images' folder
+                filename = os.path.join(save_dir, f'photo_{int(time.time())}.jpg')
+                cv2.imwrite(filename, img)
+                print(f"Photo saved to {filename}")
+                
+                last_trigger_time = time.time()
 
-        if palm_open:
-            save_image(frame)
-            time.sleep(1)
-
-        dist = np.linalg.norm(np.array(thumb_tip) - np.array(index_tip))
-        zoom_level = np.interp(dist, [30, 150], [0.8, 1.5])
-
-        fingers_up = sum(1 for pt in [index_tip, middle_tip, ring_tip] if pt[1] < landmarks[0][1])
-
-        if fingers_up == 3 and not timer_started:
-            timer_started = True
-            timer_start_time = time.time()
-
-    h, w, _ = frame.shape
-    center = (w//2, h//2)
-    M = cv2.getRotationMatrix2D(center, 0, zoom_level)
-    frame = cv2.warpAffine(frame, M, (w, h))
-
-    if timer_started:
-        elapsed = time.time() - timer_start_time
-        cv2.putText(frame, f'Timer: {3 - int(elapsed)}', (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 4)
-        
-        if elapsed >= 3:
-            save_image(frame)
-            timer_started = False
-
-    cv2.imshow("Hand Gesture Camera", frame)
+    cv2.imshow("Hand Gesture Camera", img)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
