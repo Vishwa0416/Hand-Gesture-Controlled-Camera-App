@@ -3,39 +3,49 @@ import time
 from hand_gesture import HandGesture
 import os
 
-# Create the folder if it doesn't exist
 save_dir = "captured_images"
 os.makedirs(save_dir, exist_ok=True)
 
 cap = cv2.VideoCapture(0)
 detector = HandGesture()
 
+countdown_started = False
+start_timer_time = 0
+timer_duration = 0
 last_trigger_time = 0
-cooldown = 3  # seconds to wait before allowing next capture
+cooldown = 3
 
 while True:
     success, img = cap.read()
     img, hands = detector.find_hands(img)
 
+    current_time = time.time()
+    fingers_up = 0
+
     if hands:
         landmarks = hands[0]
         fingers_up = detector.count_fingers(landmarks)
 
-        current_time = time.time()
+        if fingers_up > 0 and not countdown_started and (current_time - last_trigger_time) > cooldown:
+            timer_duration = fingers_up
+            start_timer_time = current_time
+            countdown_started = True
+            print(f"Countdown started for {timer_duration} second(s)...")
 
-        if fingers_up > 0:
-            timer = fingers_up  # Timer based on number of visible fingers
+    if countdown_started:
+        elapsed = current_time - start_timer_time
+        remaining = int(timer_duration - elapsed)
 
-            if current_time - last_trigger_time > cooldown:
-                print(f"Taking photo in {timer} second(s)...")
-                time.sleep(timer)
-                
-                # Construct save path inside 'captured_images' folder
-                filename = os.path.join(save_dir, f'photo_{int(time.time())}.jpg')
-                cv2.imwrite(filename, img)
-                print(f"Photo saved to {filename}")
-                
-                last_trigger_time = time.time()
+        if remaining > 0:
+            cv2.putText(img, f"Taking photo in {remaining}...", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 
+                        1, (0, 0, 255), 2)
+        else:
+            filename = os.path.join(save_dir, f'photo_{int(time.time())}.jpg')
+            cv2.imwrite(filename, img)
+            print(f"Photo saved to {filename}")
+
+            last_trigger_time = time.time()
+            countdown_started = False
 
     cv2.imshow("Hand Gesture Camera", img)
 
