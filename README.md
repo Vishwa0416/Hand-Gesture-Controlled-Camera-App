@@ -1,6 +1,6 @@
 # ✋ Hand Gesture Controlled Camera 📷
 
-An AI-powered computer vision application that allows you to control a camera using simple hand gestures. Capture photos, zoom, and set timers — all without touching your device!
+An AI-powered computer vision application that allows you to control a camera using simple hand gestures. Capture photos, zoom, and set timers all without touching your device!
 
 ---
 
