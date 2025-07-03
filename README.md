@@ -18,22 +18,22 @@ An AI-powered computer vision application that allows you to control a camera us
 
 Run the application:
 
-bash
-Copy
-Edit
-python main.py
+- bash
+- Copy
+- Edit
+- python main.py
 Make sure your webcam is connected and working.
 
 ---
 
 ## 🧰 Requirements
-Python 3.10
+- Python 3.10
 
-OpenCV
+- OpenCV
 
-MediaPipe
+- MediaPipe
 
-Numpy
+- Numpy
 
 Install all requirements using:
 
@@ -45,16 +45,16 @@ pip install -r requirements.txt
 ---
 
 ## 📝 TODOs
- Hand gesture detection
+- Hand gesture detection
 
- Photo capture with palm gesture
+- Photo capture with palm gesture
 
- Zoom with two-finger gesture
+- Zoom with two-finger gesture
 
- Timer with specific hand gestures
+- Timer with specific hand gestures
 
- Add GUI (Tkinter/Streamlit) [optional]
+- Add GUI (Tkinter/Streamlit) [optional]
 
- Improve gesture accuracy
+- Improve gesture accuracy
 
 
