@@ -1,5 +1,6 @@
 import cv2
 import time
+import math
 from hand_gesture import HandGesture
 import os
 
@@ -26,7 +27,8 @@ while True:
         landmarks = hands[0]
         fingers_up = detector.count_fingers(landmarks)
 
-        if fingers_up > 0 and not countdown_started and (current_time - last_trigger_time) > cooldown:
+        # Start countdown only for 1 to 5 fingers, no other condition
+        if fingers_up in [1, 2, 3, 4, 5] and not countdown_started and (current_time - last_trigger_time) > cooldown:
             timer_duration = fingers_up
             start_timer_time = current_time
             countdown_started = True
@@ -34,7 +36,7 @@ while True:
 
     if countdown_started:
         elapsed = current_time - start_timer_time
-        remaining = int(timer_duration - elapsed)
+        remaining = math.ceil(timer_duration - elapsed)
 
         if remaining > 0:
             cv2.putText(img, f"Taking photo in {remaining}...", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 
