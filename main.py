@@ -27,7 +27,6 @@ while True:
         landmarks = hands[0]
         fingers_up = detector.count_fingers(landmarks)
 
-        # Start countdown only for 1 to 5 fingers, no other condition
         if fingers_up in [1, 2, 3, 4, 5] and not countdown_started and (current_time - last_trigger_time) > cooldown:
             timer_duration = fingers_up
             start_timer_time = current_time
